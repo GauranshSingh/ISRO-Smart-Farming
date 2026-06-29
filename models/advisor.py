@@ -1,19 +1,18 @@
 from models.predict import predict_crop
 from models.moisture import estimate_moisture
 from models.weather import get_weather
+from utils.coordinate_converter import get_coordinates
 
 
-def smart_advisor(parcel_id):
+def generate_report(parcel_id, latitude=None, longitude=None):
 
     prediction = predict_crop(parcel_id)
-    print(prediction)
 
     crop_name = prediction["crop_name"]
     confidence = prediction["confidence"]
 
-    # Temporary coordinates (Jaipur)
-    latitude = 26.9124
-    longitude = 75.7873
+    if latitude is None or longitude is None:
+        latitude, longitude = get_coordinates(parcel_id)
 
     weather = get_weather(latitude, longitude)
 
@@ -44,22 +43,19 @@ def smart_advisor(parcel_id):
             hindi = "तुरंत सिंचाई करने की सलाह दी जाती है।"
 
     return {
-
         "label": prediction["label"],
-
         "crop_name": crop_name,
-
         "confidence": confidence,
-
+        "latitude": latitude,
+        "longitude": longitude,
         "moisture": moisture,
-
         "temperature": weather["temperature"],
-
         "humidity": weather["humidity"],
-
         "rain": weather["rain"],
-
         "english": english,
-
-        "hindi": hindi
+        "hindi": hindi,
     }
+
+
+# Keep old name as alias so any other code calling smart_advisor still works
+smart_advisor = generate_report

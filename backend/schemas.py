@@ -1,22 +1,23 @@
 from pydantic import BaseModel
 
 
-class ParcelRequest(BaseModel):
-    parcel_id: int
+class FieldRequest(BaseModel):
+    field_id: int
 
 
 class PredictionResponse(BaseModel):
-    parcel_id: int
-
-    crop_label: int
+    label: int
     crop_name: str
     confidence: float
+
+    latitude: float
+    longitude: float
 
     moisture: float
 
     temperature: float
     humidity: float
-    rainfall: float
+    rain: float
 
-    recommendation_en: str
-    recommendation_hi: str
+    english: str
+    hindi: str
