@@ -3,9 +3,6 @@ __pycache__/
 
 data/
 
-outputs/*.pkl
-outputs/*.csv
-
 .env
 
 .vscode/
